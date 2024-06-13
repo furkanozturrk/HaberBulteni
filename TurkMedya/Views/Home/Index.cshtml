@@ -1,0 +1,77 @@
+﻿@model HomeViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<script src="~/js/home/home.js"></script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resim Gösterimi</title>
+</head>
+<body>
+
+    <div class="container mt-3">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form id="kategoriForm">
+                    <div class="form-group">
+                        <select class="form-control" id="categorySelection" asp-for="SelectedValue">
+                            @* Buradaki değerler categoryId alanından alınmıştır.Gündem Id'si olmadığından 1 atanmıştır.Hepsi için 0 atanmıştır. *@
+                            <option value="0">Hepsi</option>
+                            <option value="1">Gündem</option>
+                            <option value="14">Dünya</option>
+                            <option value="4">Spor</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="searchText" placeholder="Ara" asp-for="SelectedKey">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" onclick="filterBy()">Ara</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+
+    <div class="tab-pane fade show active" id="GridView" role="tabpanel" aria-labelledby="GridView">
+        <div class="row">
+            @foreach (var item in Model.News)
+            {
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <img src="@item.imageUrl" class="card-img-top" alt="Haber Fotoğrafı">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.title</h5>
+                            <p class="card-text">@item.shortText</p>
+                            <div class="card-footer mb-0 text-center">
+                                <button class="btn btn-primary" onclick="Details('@item.itemId')">Detay</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { pageNum = i,category=Model.SelectedValue,searchText=Model.SelectedKey})">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+
+</body>
+</html>
