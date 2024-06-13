@@ -15,7 +15,7 @@ namespace TurkMedya.Controllers
             _logger = logger;
             _mediator = mediator;
         }
-
+         
         public async Task<IActionResult> Index(int? pageNum, string? category = "0", string searchText = "")
         {
             var pageSize = 5;
